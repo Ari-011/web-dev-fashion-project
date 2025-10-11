@@ -1,0 +1,47 @@
+{{ header}}
+
+<main>
+  <section class="main-image">
+    <img src="/img/example1.avif" alt="Two men wearing brand glasses">
+  </section>
+
+  <!-- Eyeglasses Section -->
+  <section class="category-section">
+    <h2>Eyeglasses</h2>
+    <div class="products-grid">
+      {{#each eyeglasses}}
+        <div class="product-item">
+          <a href="{{this.link}}">
+            <img src="{{this.image}}" alt="{{this.name}}">
+          </a>
+          <h3>{{this.name}}</h3>
+          <p>{{this.price}} SEK</p>
+        </div>
+      {{/each}}
+    </div>
+    <div class="home-button">
+      <button><a href="/glasses">Show More Eyeglasses</a></button>
+    </div>
+  </section>
+
+  <!-- Sunglasses Section -->
+  <section class="category-section">
+    <h2>Sunglasses</h2>
+    <div class="products-grid">
+      {{#each sunglasses}}
+        <div class="product-item">
+          <a href="{{this.link}}">
+            <img src="{{this.image}}" alt="{{this.name}}">
+          </a>
+          <h3>{{this.name}}</h3>
+          <p>{{this.price}} SEK</p>
+        </div>
+      {{/each}}
+    </div>
+    <div class="home-button">
+      <button><a href="/sunglasses">Show More Sunglasses</a></button>
+    </div>
+  </section>
+</main>
+
+{{ footer}}

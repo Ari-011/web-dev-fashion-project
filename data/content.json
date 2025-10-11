@@ -1,0 +1,46 @@
+{
+  "title": "Fashion Project",
+  "header": {
+    "logo": "img/logo.png",
+    "nav": [
+      { "name": "Home", "link": "/" },
+      { "name": "Eyeglasses", "link": "/eyeglasses" },
+      { "name": "Sunglasses", "link": "/sunglasses" },
+      { "name": "Contact", "link": "/contact" }
+    ]
+  },
+  "footer": {
+    "text": "© 2024 Fashion Project. All rights reserved.",
+    "social": [
+      { "name": "Facebook", "link": "https://facebook.com", "icon": "img/facebook-icon.png" },
+      { "name": "Instagram", "link": "https://instagram.com", "icon": "img/instagram-icon.png" },
+      { "name": "Twitter", "link": "https://twitter.com", "icon": "img/twitter-icon.png" }
+    ]
+  },
+  "eyeglasses": [
+    { "name": "Classic Black", "price": "1500 SEK", "image": "img/glasses-1.avif" },
+    { "name": "Modern Frame", "price": "1800 SEK", "image": "img/glasses-2.avif" }
+  ],
+  "sunglasses": [
+    { "name": "Aviator Classic", "price": "1200 SEK", "image": "img/sunglasses-4.avif" },
+    { "name": "Round Retro", "price": "1300 SEK", "image": "img/sunglasses-5.avif" }
+  ],
+  "products": [
+    { "name": "Sleek Black Eyeglasses", "price": "900 SEK", "image": "img/glasses-13.avif" },
+    { "name": "Classic Round Eyeglasses", "price": "1000 SEK", "image": "img/glasses-14.avif" },
+    { "name": "Modern Square Eyeglasses", "price": "1100 SEK", "image": "img/glasses-15.avif" },
+    { "name": "Chic Cat-Eye Eyeglasses", "price": "1200 SEK", "image": "img/glasses-16.avif" },
+    { "name": "Retro Aviator Eyeglasses", "price": "950 SEK", "image": "img/glasses-17.avif" },
+    { "name": "Sleek Sports Eyeglasses", "price": "1050 SEK", "image": "img/glasses-18.avif" },
+    { "name": "Elegant Gold Eyeglasses", "price": "1100 SEK", "image": "img/glasses-19.avif" },
+    { "name": "Bold Red Eyeglasses", "price": "1150 SEK", "image": "img/glasses-20.avif" }
+  ],
+  
+  "nav": [
+  { "name": "Home", "link": "/" },
+  { "name": "Sunglasses", "link": "/sunglasses" },
+  { "name": "Glasses", "link": "/glasses" }
+  ]
+}
+
+

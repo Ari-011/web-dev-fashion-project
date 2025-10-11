@@ -1,0 +1,22 @@
+<main>
+  <section class="grid-container">
+    <div class="secondary-image">
+      <img src="/img/maineyee.jpeg" alt="Secondary image" />
+    </div>
+
+    <section class="best-sellers">
+      <h2>Eyeglasses</h2>
+      <div class="products-grid">
+        {{#each products}}
+          <div class="product-item">
+            <a href="/contact">
+              <img src="/{{this.image}}" alt="{{this.name}}" />
+              <h3>{{this.name}}</h3>
+              <p>{{this.price}}</p>
+            </a>
+          </div>
+        {{/each}}
+      </div>
+    </section>
+  </section>
+</main>
