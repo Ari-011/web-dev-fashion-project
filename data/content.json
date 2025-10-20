@@ -10,7 +10,7 @@
     ]
   },
   "footer": {
-    "text": "© 2024 Fashion Project. All rights reserved.",
+    "text": "© 2025 Fashion Project. All rights reserved.",
     "social": [
       { "name": "Facebook", "link": "https://facebook.com", "icon": "img/facebook-icon.png" },
       { "name": "Instagram", "link": "https://instagram.com", "icon": "img/instagram-icon.png" },
@@ -18,22 +18,32 @@
     ]
   },
   "eyeglasses": [
-    { "name": "Classic Black", "price": "1500 SEK", "image": "img/glasses-1.avif" },
-    { "name": "Modern Frame", "price": "1800 SEK", "image": "img/glasses-2.avif" }
+    { "id": "1", "name": "Classic Black", "price": "1500", "image": "img/glasses-1.avif" },
+    { "id": "2", "name": "Modern Frame", "price": "1800", "image": "img/glasses-2.avif" },
+    { "id": "3", "name": "Sleek Black", "price": "900", "image": "img/glasses-13.avif" },
+    { "id": "4", "name": "Classic Round", "price": "1000", "image": "img/glasses-14.avif" },
+    { "id": "5", "name": "Modern Square", "price": "1100", "image": "img/glasses-15.avif" },
+    { "id": "6", "name": "Chic Cat-Eye", "price": "1200", "image": "img/glasses-16.avif" },
+    { "id": "7", "name": "Retro Aviator", "price": "950", "image": "img/glasses-17.avif" },
+    { "id": "8", "name": "Sleek Sports", "price": "1050", "image": "img/glasses-18.avif" },
+    { "id": "9", "name": "Elegant Gold", "price": "1100", "image": "img/glasses-19.avif" },
+    { "id": "10", "name": "Bold Red", "price": "1150", "image": "img/glasses-20.avif" }
   ],
   "sunglasses": [
-    { "name": "Aviator Classic", "price": "1200 SEK", "image": "img/sunglasses-4.avif" },
-    { "name": "Round Retro", "price": "1300 SEK", "image": "img/sunglasses-5.avif" }
-  ],
-  "products": [
-    { "name": "Sleek Black Eyeglasses", "price": "900 SEK", "image": "img/glasses-13.avif" },
-    { "name": "Classic Round Eyeglasses", "price": "1000 SEK", "image": "img/glasses-14.avif" },
-    { "name": "Modern Square Eyeglasses", "price": "1100 SEK", "image": "img/glasses-15.avif" },
-    { "name": "Chic Cat-Eye Eyeglasses", "price": "1200 SEK", "image": "img/glasses-16.avif" },
-    { "name": "Retro Aviator Eyeglasses", "price": "950 SEK", "image": "img/glasses-17.avif" },
-    { "name": "Sleek Sports Eyeglasses", "price": "1050 SEK", "image": "img/glasses-18.avif" },
-    { "name": "Elegant Gold Eyeglasses", "price": "1100 SEK", "image": "img/glasses-19.avif" },
-    { "name": "Bold Red Eyeglasses", "price": "1150 SEK", "image": "img/glasses-20.avif" }
+    { "id": "11", "name": "Aviator Classic", "price": "1200", "image": "img/sunglasses-4.avif" },
+    { "id": "12", "name": "Round Retro", "price": "1300", "image": "img/sunglasses-5.avif" },
+    { "id": "13", "name": "Trendy Square", "price": "1200", "image": "img/sunglass1.jpg" },
+    { "id": "14", "name": "Vintage Oval", "price": "1300", "image": "img/sunglass2.jpg" },
+    { "id": "15", "name": "Futuristic Shield", "price": "1200", "image": "img/sunglass3.jpg" },
+    { "id": "16", "name": "Classic Tortoise", "price": "1300", "image": "img/sunglasses-8.avif" },
+    { "id": "17", "name": "Bold Red Frame", "price": "1200", "image": "img/sunglasses-9.avif" },
+    { "id": "18", "name": "Chic Round Metal", "price": "1300", "image": "img/sunglasses-10.avif" },
+    { "id": "19", "name": "Trendy Gradient", "price": "1200", "image": "img/sunglasses-11.avif" },
+    { "id": "20", "name": "Classic Tortoise", "price": "1300", "image": "img/sunglasses-12.avif" },
+    { "id": "21", "name": "Wayfarer Bold", "price": "1400", "image": "img/sunglasses-13.avif" },
+    { "id": "22", "name": "Sporty Wrap", "price": "1600", "image": "img/sunglasses-14.avif" },
+    { "id": "23", "name": "Elegant Cat-Eye", "price": "1700", "image": "img/sunglasses-15.avif" }
+
   ],
   
   "nav": [

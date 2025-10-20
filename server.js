@@ -1,10 +1,25 @@
-const { engine } = require('express-handlebars')
+/*
+MY NAME - MYMAIL@ju.se
+
+
+Project Web Dev Fun - 2025
+
+Admininistrator login: admin
+Administrator password: $2b$12$p5.UuPb9Zh.siIc78Ie.Nu9eGx9d5OLT2pkecedig2P.6CdfL1ZUa
+*/
+
+//--- LOAD THE PACKAGES 
 const express = require('express')
+const {engine} = require('express-handlebars')
 const bodyParser = require('body-parser')
+//const bcrypt = require('bcrypt')
+//const session = require('express-session')
+const sqlite3=require('sqlite3') // load the sqlite3 package
+//const connectSqlite3 = require('connect-sqlite3')
 const fs = require('fs'); // to read JSON files
 const path = require('path')
 
-// EXPRESS
+// DEFINE VARIABLES AND CONSTANTS - EXPRESS
 const app = express()
 const PORT = process.env.PORT || 8080
 

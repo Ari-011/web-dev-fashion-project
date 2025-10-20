@@ -6,11 +6,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Toggle cart visibility
 function toggleCart() {
-    document.getElementById("cart-panel").classList.toggle("show");
+    const cartPanel = document.getElementById("cart-panel");
+    if (cartPanel) {
+        cartPanel.classList.toggle("show");
+    }
 }
 
 // Function to add a product to the cart
 function addToCart(product) {
+
+    product.id = Number(product.id); // Ensure the ID is a number
+    product.price = Number(product.price); // Ensure the price is a number
+
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
     let existingProduct = cart.find(item => item.id === product.id);
@@ -78,7 +85,10 @@ function loadCartItems() {
     let cartItemsContainer = document.getElementById("cart-items");
     let cartCount = document.getElementById("cart-count");
 
+    if (!cartItemsContainer || !cartCount) return; // Prevent errors if elements are missing
+
     cartItemsContainer.innerHTML = "";
+
     cartCount.innerText = cart.reduce((sum, item) => sum + item.quantity, 0);
 
     cart.forEach(item => {

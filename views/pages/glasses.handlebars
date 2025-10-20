@@ -7,12 +7,17 @@
     <section class="best-sellers">
       <h2>Eyeglasses</h2>
       <div class="products-grid">
-        {{#each products}}
+        {{#each eyeglasses}}
           <div class="product-item">
-            <a href="/contact">
               <img src="/{{this.image}}" alt="{{this.name}}" />
               <h3>{{this.name}}</h3>
-              <p>{{this.price}}</p>
+              <p>{{this.price}} SEK</p>
+              <button onclick="addToCart({
+                  id: '{{this.id}}',
+                  name: '{{this.name}}',
+                  price: {{this.price}},
+                  image: '{{this.image}}'
+                })">Add to Cart</button>
             </a>
           </div>
         {{/each}}

@@ -11,7 +11,13 @@
           <div class="product-item">
             <img src="{{this.image}}" alt="{{this.name}}" />
             <h3>{{this.name}}</h3>
-            <p>{{this.price}}</p>
+            <p>{{this.price}} SEK</p>
+            <button onclick="addToCart({
+                id: '{{this.id}}',
+                name: '{{this.name}}',
+                price: {{this.price}},
+                image: '{{this.image}}'
+              })">Add to Cart</button>
           </div>
         {{/each}}
       </div>

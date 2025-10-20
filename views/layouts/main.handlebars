@@ -5,12 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{title}}</title>
   <link rel="stylesheet" href="/css/styles.css">
+  <script src="/main.js" defer></script>
+
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
   {{> header}}
   {{{body}}}
   {{> footer}}
-  <script src="/main.js"></script>
+  
+<!-- Cart Panel -->
+<div id="cart-panel" class="cart-panel">
+  <div class="cart-header">
+    <h3>Shopping Cart</h3>
+    <button class="close-cart" onclick="toggleCart()">×</button>
+  </div>
+
+  <!-- Dynamic items will be inserted here by JS -->
+  <div id="cart-items"></div>
+
+  <div class="order-summary">
+    <div class="order-total">
+      <span>Order Total</span>
+      <span>0 SEK</span> <!-- updated dynamically -->
+    </div>
+    <p class="shipping-note">
+      Shipping, Tax, and Shipping Protection not included
+    </p>
+    <button class="checkout-btn">Proceed to Checkout</button>
+  </div>
+</div>
+
+
 </body>
 </html>
