@@ -8,19 +8,6 @@
       <h1>LUMILUXE</h1>
     </div>
 
-    <div class="header-icons">
-      <div class="icon-profile">
-        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-          <path stroke="currentColor" stroke-width="2" d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-        </svg>
-      </div>
-
-      <div class="icon-favourites icon-link">
-        <svg class="w-6 h-6 text-gray-800 dark:text-white" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.01 6.001C6.5 1 1 8 5.782 13.001L12.011 20l6.23-7C23 8 17.5 1 12.01 6.002Z"/>
-        </svg>
-      </div>
-
       <div class="icon-cart icon-link" onclick="toggleCart()">
         <svg class="w-6 h-6 text-gray-800 dark:text-white" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10V6a3 3 0 0 1 3-3v0a3 3 0 0 1 3 3v4m3-2 .917 11.923A1 1 0 0 1 17.92 21H6.08a1 1 0 0 1-.997-1.077L6 8h12Z"/>
@@ -44,6 +31,14 @@
         <li><a href="/sunglasses">Sunglasses</a></li>
         <li><a href="/glasses">Glasses</a></li>
         <li><a href="/contact">Contact us</a></li>
+        
+        {{#if session.isLoggedIn}}
+      <li><a href="/logout">Logout</a></li>
+      <li>Welcome, {{session.un}}!</li>
+    {{else}}
+      <li><a href="/login">Login</a></li>
+      <li><a href="/register">Register</a></li>
+    {{/if}}
       </ul>
     </nav>
 
@@ -53,6 +48,16 @@
         <li><a href="/sunglasses">Sunglasses</a></li>
         <li><a href="/glasses">Glasses</a></li>
         <li><a href="/contact">Contact us</a></li>
+        
+        {{#if session.isLoggedIn}}
+        {{#if session.isAdmin}}
+      <li><a href="/users">User Management</a></li>
+    {{/if}}
+      <li><a href="/logout">Logout</a></li>
+      <li>Welcome, {{session.un}}!</li>
+    {{else}}
+      <li><a href="/login">Login</a></li>
+    {{/if}}
       </ul>
     </nav>
   </div>

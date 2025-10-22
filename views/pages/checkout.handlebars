@@ -1,0 +1,26 @@
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<h1>Checkout</h1>
+<form action="/checkout" method="POST">
+  <label>Name:</label><input name="fullName" required>
+  <label>Address:</label><input name="address" required>
+  <label>City:</label><input name="city" required>
+  <label>Postal code:</label><input name="postal" required>
+  <label>Card number:</label><input name="cardNumber" required>
+  <button type="submit">Pay now</button>
+</form>
+
+{{#if error}}
+  <p style="color:red;">{{error}}</p>
+{{/if}}
+
+{{#if success}}
+  <p style="color:green;">{{success}}</p>
+{{/if}}

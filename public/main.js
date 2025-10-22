@@ -130,16 +130,13 @@ function updateOrderTotal() {
     }
 }
 
-// Proceed to Checkout (Example function)
-function proceedToCheckout() {
-    alert("Proceeding to checkout...");
-    // Add your checkout logic here
-}
-
 // Attach event listener to the checkout button
-document.addEventListener("DOMContentLoaded", function () {
-    let checkoutButton = document.querySelector(".checkout-btn");
-    if (checkoutButton) {
-        checkoutButton.addEventListener("click", proceedToCheckout);
-    }
-});
+//document.addEventListener("DOMContentLoaded", function () {
+    //let checkoutButton = document.querySelector(".checkout-btn");
+    //if (checkoutButton) {
+       // checkoutButton.addEventListener("click", function() {
+           // alert("Proceeding to checkout...");
+            
+      //  });
+ //   }
+//});

@@ -12,15 +12,14 @@
             <img src="{{this.image}}" alt="{{this.name}}" />
             <h3>{{this.name}}</h3>
             <p>{{this.price}} SEK</p>
-            <button onclick="addToCart({
-                id: '{{this.id}}',
-                name: '{{this.name}}',
-                price: {{this.price}},
-                image: '{{this.image}}'
-              })">Add to Cart</button>
-          </div>
-        {{/each}}
-      </div>
-    </section>
+            <form method="post" action="/cart/add">
+            <input type="hidden" name="productId" value="{{id}}">
+            <button type="submit">Add to cart</button>
+            </form>
+        </div>
+      {{/each}}
+    </div>
   </section>
 </main>
+
+

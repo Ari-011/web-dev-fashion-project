@@ -1,0 +1,42 @@
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<h1>Register</h1>
+
+{{#if error}}
+  <p style="color:red;">{{error}}</p>
+{{/if}}
+
+{{#if success}}
+  <p style="color:green;">{{success}}</p>
+{{/if}}
+
+<form action="/register" method="POST">
+  <label for="username">Username:</label>
+  <input type="text" id="username" name="username" required>
+
+  <label for="password">Password:</label>
+  <input type="text" id="password" name="password" readonly required>
+  
+  <button type="button" id="generate">Generate Strong Password</button>
+  <button type="submit">Register</button>
+</form>
+
+<script>
+  document.getElementById("generate").addEventListener("click", () => {
+    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-+=<>?";
+    let pw = "";
+    for (let i = 0; i < 14; i++) {
+      pw += charset.charAt(Math.floor(Math.random() * charset.length));
+    }
+    document.getElementById("password").value = pw;
+  });
+</script>
+
+

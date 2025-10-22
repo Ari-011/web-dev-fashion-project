@@ -1,0 +1,41 @@
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<h1>User Management</h1>
+
+{{#if error}}
+  <p style="color:red;">{{error}}</p>
+{{/if}}
+
+{{#if users}}
+  <table border="1" cellpadding="6" cellspacing="0">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Hashed Password</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each users}}
+        <tr>
+          <td>{{this.id}}</td>
+          <td>{{this.username}}</td>
+          <td>{{this.email}}</td>
+          <td style="font-family:monospace;">{{this.password}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+{{else}}
+  <p>No users found.</p>
+{{/if}}
+

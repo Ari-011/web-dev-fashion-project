@@ -1,0 +1,14 @@
+<main>
+  <h1>Order confirmed</h1>
+  <p>Thank you{{#if customerName}}, {{customerName}}{{/if}} — your order has been placed.</p>
+
+  {{#if orderId}}
+    <p>Order ID: <strong>{{orderId}}</strong></p>
+  {{/if}}
+
+  {{#if total}}
+    <p>Total: <strong>{{total}} SEK</strong></p>
+  {{/if}}
+
+  <p><a href="/">Continue shopping</a></p>
+</main>

@@ -16,7 +16,30 @@
     text-decoration: none;
     color: inherit;
   }
+
+  /* Tables */
+
+  table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+th {
+  background-color: #111;
+  color: #fff;
+}
+
+td, th {
+  padding: 8px 10px;
+  text-align: left;
+}
+
+tr:nth-child(even) {
+  background-color: #f4f4f4;
+}
   
+
   /* Header */
   header {
     position: fixed;
