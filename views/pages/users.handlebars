@@ -26,12 +26,17 @@
     </thead>
     <tbody>
       {{#each users}}
-        <tr>
-          <td>{{this.id}}</td>
-          <td>{{this.username}}</td>
-          <td>{{this.email}}</td>
-          <td style="font-family:monospace;">{{this.password}}</td>
-        </tr>
+          <tr>
+            <td>{{id}}</td>
+            <td>
+              <form method="POST" action="/users/update/{{id}}">
+                <input type="text" name="username" value="{{username}}">
+                <button type="submit">Update</button>
+              </form>
+            </td>
+            <td><a href="/users/delete/{{id}}">Delete</a></td>
+            <td style="font-family:monospace;">{{this.password}}</td>
+          </tr>
       {{/each}}
     </tbody>
   </table>

@@ -1,142 +1,128 @@
-document.addEventListener("DOMContentLoaded", function () {
-    loadCartItems();
-    updateCartCount(); // Ensure cart count is updated on load
-    updateOrderTotal(); // Ensure order total is updated on load
+
+// LOAD CART
+async function loadCart() {
+  try {
+    const res = await fetch('/api/cart');
+    if (!res.ok) throw new Error('Not logged in or DB error');
+    const items = await res.json();
+    renderCart(items);
+  } catch (err) {
+    console.error('Error loading cart:', err);
+    const cartContainer = document.getElementById('cart-items');
+    const cartCount = document.getElementById('cart-count');
+    if (cartContainer) cartContainer.innerHTML = '<p>Please log in to view your cart.</p>';
+    if (cartCount) cartCount.textContent = '0';
+  }
+}
+
+// RENDER CART
+function renderCart(items) {
+  const cartContainer = document.getElementById('cart-items');
+  if (!cartContainer) return;
+
+  cartContainer.innerHTML = '';
+  let total = 0;
+
+  items.forEach(item => {
+    total += item.price * item.quantity;
+
+    const cartItem = document.createElement('div');
+    cartItem.classList.add('cart-item');
+    cartItem.id = `cart-item-${item.id}`;
+
+    cartItem.innerHTML = `
+      <img src="${item.image}" alt="${item.name}" />
+      <div class="cart-details">
+        <h4>${item.name}</h4>
+        <p>${item.price} SEK</p>
+        <div class="quantity-controls">
+          <button onclick="decreaseQuantity(${item.id}, ${item.quantity})">−</button>
+          <span>${item.quantity}</span>
+          <button onclick="increaseQuantity(${item.id}, ${item.quantity})">+</button>
+        </div>
+        <p class="item-total">${item.price * item.quantity} SEK</p>
+      </div>
+      <button class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button>
+    `;
+    cartContainer.appendChild(cartItem);
+  });
+
+  const cartCount = document.getElementById('cart-count');
+  if (cartCount) cartCount.textContent = items.length;
+
+  const orderTotalEl = document.querySelector('.order-total span:last-child');
+  if (orderTotalEl) orderTotalEl.textContent = total + ' SEK';
+}
+
+// ADD TO CART
+async function addToCart(productId) {
+  try {
+    const res = await fetch('/api/cart/add', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ productId })
+    });
+    if (res.ok) await loadCart();
+  } catch (err) {
+    console.error('Error adding to cart:', err);
+  }
+}
+
+document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+  btn.addEventListener('click', async (e) => {
+    const productId = e.currentTarget.dataset.id;
+    btn.disabled = true; // prevent double clicks
+    await addToCart(productId);
+    btn.disabled = false;
+  });
 });
 
-// Toggle cart visibility
-function toggleCart() {
-    const cartPanel = document.getElementById("cart-panel");
-    if (cartPanel) {
-        cartPanel.classList.toggle("show");
-    }
+// REMOVE FROM CART
+async function removeFromCart(cartItemId) {
+  try {
+    const res = await fetch(`/api/cart/${cartItemId}`, { method: 'DELETE' });
+    if (res.ok) await loadCart();
+  } catch (err) {
+    console.error('Error removing from cart:', err);
+  }
 }
 
-// Function to add a product to the cart
-function addToCart(product) {
-
-    product.id = Number(product.id); // Ensure the ID is a number
-    product.price = Number(product.price); // Ensure the price is a number
-
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    let existingProduct = cart.find(item => item.id === product.id);
-    
-    if (existingProduct) {
-        existingProduct.quantity += 1;
-    } else {
-        cart.push({ ...product, quantity: 1 });
-    }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-    updateCartCount();
-    loadCartItems();
-    updateOrderTotal();
+// INCREASE QUANTITY
+async function increaseQuantity(cartItemId, currentQty) {
+  await updateQuantity(cartItemId, currentQty + 1);
 }
 
-// Function to remove an item from the cart
-function removeFromCart(productId) {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    cart = cart.filter(item => item.id !== productId);
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-    updateCartCount();
-    loadCartItems();
-    updateOrderTotal();
+// DECREASE QUANTITY
+async function decreaseQuantity(cartItemId, currentQty) {
+  if (currentQty > 1) {
+    await updateQuantity(cartItemId, currentQty - 1);
+  } else {
+    await removeFromCart(cartItemId);
+  }
 }
 
-// Increase item quantity
-function increaseQuantity(productId) {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    let product = cart.find(item => item.id === productId);
-
-    if (product) {
-        product.quantity += 1;
-    }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-    updateCartCount();
-    loadCartItems();
-    updateOrderTotal();
-}
-
-// Decrease item quantity
-function decreaseQuantity(productId) {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    let productIndex = cart.findIndex(item => item.id === productId);
-
-    if (productIndex !== -1) {
-        if (cart[productIndex].quantity > 1) {
-            cart[productIndex].quantity -= 1;
-        } else {
-            cart.splice(productIndex, 1); // Remove item if quantity reaches 0
-        }
-    }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-    updateCartCount();
-    loadCartItems();
-    updateOrderTotal();
-}
-
-// Function to load and display cart items
-function loadCartItems() {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    let cartItemsContainer = document.getElementById("cart-items");
-    let cartCount = document.getElementById("cart-count");
-
-    if (!cartItemsContainer || !cartCount) return; // Prevent errors if elements are missing
-
-    cartItemsContainer.innerHTML = "";
-
-    cartCount.innerText = cart.reduce((sum, item) => sum + item.quantity, 0);
-
-    cart.forEach(item => {
-        let cartItem = document.createElement("div");
-        cartItem.classList.add("cart-item");
-        cartItem.innerHTML = `
-            <img src="${item.image}" alt="${item.name}">
-            <div class="cart-details">
-                <h4>${item.name}</h4>
-                <p>${item.price} SEK</p>
-                <div class="quantity-controls">
-                    <button onclick="decreaseQuantity(${item.id})">−</button>
-                    <span>${item.quantity}</span>
-                    <button onclick="increaseQuantity(${item.id})">+</button>
-                </div>
-                <p class="item-total">${item.price * item.quantity} SEK</p>
-            </div>
-            <button class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button>
-        `;
-        cartItemsContainer.appendChild(cartItem);
+// UPDATE QUANTITY
+async function updateQuantity(cartItemId, quantity) {
+  try {
+    const res = await fetch(`/cart/update/${cartItemId}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `quantity=${quantity}`
     });
+    if (res.ok) await loadCart();
+  } catch (err) {
+    console.error('Error updating quantity:', err);
+  }
 }
 
-// Function to update the cart count
-function updateCartCount() {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    let totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    document.getElementById("cart-count").innerText = totalItems;
+// TOGGLE CART PANEL
+function toggleCart() {
+  const panel = document.getElementById('cart-panel');
+  if (panel) panel.classList.toggle('show');
 }
 
-// Function to calculate and update the order total
-function updateOrderTotal() {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    let orderTotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+document.addEventListener('DOMContentLoaded', () => {
+  loadCart();
+});
 
-    let orderTotalElement = document.querySelector(".order-total span:last-child");
-    if (orderTotalElement) {
-        orderTotalElement.innerText = `${orderTotal} SEK`;
-    }
-}
 
-// Attach event listener to the checkout button
-//document.addEventListener("DOMContentLoaded", function () {
-    //let checkoutButton = document.querySelector(".checkout-btn");
-    //if (checkoutButton) {
-       // checkoutButton.addEventListener("click", function() {
-           // alert("Proceeding to checkout...");
-            
-      //  });
- //   }
-//});

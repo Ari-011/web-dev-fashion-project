@@ -1,11 +1,25 @@
 /*
-MY NAME - MYMAIL@ju.se
 
+Ariadna Nicol Alfonso Villamarin - alar24rn@ju.se
+
+Target grade: 5
 
 Project Web Dev Fun - 2025
 
-Admininistrator login: admin
-Administrator password: $2b$12$p5.UuPb9Zh.siIc78Ie.Nu9eGx9d5OLT2pkecedig2P.6CdfL1ZUa
+IMPORTANT! 
+
+You can only add products to the cart and checkout if you are logged in.
+
+Administrator login: admin
+Administrator password: wdf#2025
+Administrator hashed password: $2b$12$p5.UuPb9Zh.siIc78Ie.Nu9eGx9d5OLT2pkecedig2P.6CdfL1ZUa
+
+This project uses Express.js with Handlebars as the templating engine, SQLite for the database, and bcrypt for password hashing. It includes user registration, login, session management, product display, shopping cart functionality, and an admin panel for user and order management.
+
+The images used in this project are sourced from Google Images for demonstration purposes only and are not owned by the developer.
+
+AI was used to help generate parts of the code for this project.
+
 */
 
 //--- LOAD THE PACKAGES 
@@ -55,13 +69,8 @@ app.use((req, res, next) => {
 })
 
 
-
 // serve static files from /public
 app.use(express.static(path.join(__dirname, 'public')))
-
-app.get('/ping', (req, res) => {
-  res.send('pong')
-})
 
 // load site data once and expose to all views
 const siteData = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'content.json'), 'utf8'))
@@ -83,10 +92,26 @@ app.engine('handlebars', engine({
       const n1 = Number(a) || 0;
       const n2 = Number(b) || 0;
       return n1 * n2;
-    }
+    },
+    range: (start, end) => {
+      let arr = [];
+      for (let i = start; i <= end; i++) arr.push(i);
+      return arr;
+    },
+    ifEquals: (a, b, options) => a === b ? options.fn(this) : options.inverse(this),
+
+    // comparison helpers
+    gt: (a, b, options) => {
+      // support both subexpression ({{if (gt a b)}}) and block helper ({{#gt a b}}...{{/gt}})
+      const result = Number(a) > Number(b);
+      if (typeof options === 'object') return result ? options.fn(this) : options.inverse(this);
+      return result;
+    },
+    gte: (a, b) => Number(a) >= Number(b),
+    lt: (a, b) => Number(a) < Number(b),
+    lte: (a, b) => Number(a) <= Number(b)
   }
 }))
-
 
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'views'));
@@ -101,11 +126,13 @@ app.get('/', (req, res) => {
     SELECT * FROM products
     WHERE category_id = 1
     ORDER BY id ASC
+    LIMIT 8
   `;
   const sqlSunglasses = `
     SELECT * FROM products
     WHERE category_id = 2
     ORDER BY id ASC
+    LIMIT 8
   `;
 
   db.all(sqlEyeglasses, [], (err, eyeglasses) => {
@@ -187,7 +214,7 @@ app.post("/login", async (req, res) => {
     req.session.un = user.username;
     req.session.isLoggedIn = true;
     req.session.isAdmin = false; 
-    req.session.userId = user.id; // store user ID for later use
+    req.session.userId = user.id; // store user ID 
 
     res.redirect("/");
   });
@@ -245,8 +272,9 @@ app.post("/register", async (req, res) => {
   }
 });
 
-// --- ADMIN USER MANAGEMENT PAGE ---
+// ADMIN USER MANAGEMENT PAGE 
 app.get("/users", (req, res) => {
+
   // CHECK IF ADMIN
   if (!req.session.isLoggedIn || !req.session.isAdmin) {
     return res.status(403).render("pages/login", {
@@ -275,6 +303,25 @@ app.get("/users", (req, res) => {
   });
 });
 
+// ADMIN USER UPDATE 
+app.post("/users/update/:id", (req, res) => {
+  if (!req.session.isAdmin) return res.status(403).send("Admins only.");
+  const { username } = req.body;
+  db.run("UPDATE users SET username = ? WHERE id = ?", [username, req.params.id], (err) => {
+    if (err) console.error(err);
+    res.redirect("/users");
+  });
+});
+
+// ADMIN USER DELETE 
+app.get("/users/delete/:id", (req, res) => {
+  if (!req.session.isAdmin) return res.status(403).send("Admins only.");
+  db.run("DELETE FROM users WHERE id = ?", [req.params.id], (err) => {
+    if (err) console.error(err);
+    res.redirect("/users");
+  });
+});
+
 // LOGOUT
 
 app.get("/logout", (req, res) => {
@@ -286,22 +333,42 @@ app.get("/logout", (req, res) => {
 //Glasses page
 
 app.get('/glasses', (req, res) => {
-  const sql = `
+  const itemsPerPage = 3;
+  const page = parseInt(req.query.page) || 1;
+  const offset = (page - 1) * itemsPerPage;
+
+  const sqlCount = `
+    SELECT COUNT(*) AS count
+    FROM products
+    INNER JOIN categories ON products.category_id = categories.id
+    WHERE categories.name = 'Eyeglasses'
+  `;
+  const sqlPage = `
     SELECT products.*, categories.name AS categoryName
     FROM products
     INNER JOIN categories ON products.category_id = categories.id
     WHERE categories.name = 'Eyeglasses'
     ORDER BY products.id ASC
+    LIMIT ? OFFSET ?
   `;
-  db.all(sql, [], (err, rows) => {
-    if (err) console.error(err);
-    const data = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'content.json'), 'utf8'));
-    res.render('pages/glasses', {
-      layout: 'main',
-      title: 'Eyeglasses | LUMILUXE',
-      nav: data.nav,
-      footer: data.footer,
-      eyeglasses: rows
+
+  db.get(sqlCount, [], (err, countRow) => {
+    const totalItems = countRow.count;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+    db.all(sqlPage, [itemsPerPage, offset], (err2, rows) => {
+      if (err2) console.error(err2);
+      const data = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'content.json'), 'utf8'));
+
+      res.render('pages/glasses', {
+        layout: 'main',
+        title: 'Eyeglasses | LUMILUXE',
+        nav: data.nav,
+        footer: data.footer,
+        glasses: rows,
+        currentPage: page,
+        totalPages
+      });
     });
   });
 });
@@ -311,22 +378,42 @@ app.get('/glasses', (req, res) => {
 //Sunglasses page
 
 app.get('/sunglasses', (req, res) => {
-  const sql = `
+  const itemsPerPage = 3;
+  const page = parseInt(req.query.page) || 1;
+  const offset = (page - 1) * itemsPerPage;
+
+  const sqlCount = `
+    SELECT COUNT(*) AS count
+    FROM products
+    INNER JOIN categories ON products.category_id = categories.id
+    WHERE categories.name = 'Sunglasses'
+  `;
+  const sqlPage = `
     SELECT products.*, categories.name AS categoryName
     FROM products
     INNER JOIN categories ON products.category_id = categories.id
     WHERE categories.name = 'Sunglasses'
     ORDER BY products.id ASC
+    LIMIT ? OFFSET ?
   `;
-  db.all(sql, [], (err, rows) => {
-    if (err) console.error(err);
-    const data = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'content.json'), 'utf8'));
-    res.render('pages/sunglasses', {
-      layout: 'main',
-      title: 'Sunglasses | LUMILUXE',
-      nav: data.nav,
-      footer: data.footer,
-      sunglasses: rows
+
+  db.get(sqlCount, [], (err, countRow) => {
+    const totalItems = countRow.count;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+    db.all(sqlPage, [itemsPerPage, offset], (err2, rows) => {
+      if (err2) console.error(err2);
+      const data = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'content.json'), 'utf8'));
+
+      res.render('pages/sunglasses', {
+        layout: 'main',
+        title: 'Sunglasses | LUMILUXE',
+        nav: data.nav,
+        footer: data.footer,
+        sunglasses: rows,
+        currentPage: page,
+        totalPages
+      });
     });
   });
 });
@@ -353,7 +440,7 @@ app.get('/contact', (req, res) => {
 
 
 
-//CREATE
+//CART CREATE
 
 app.post("/cart/add", (req, res) => {
   console.log('HANDLER: POST /cart/add called — body:', req.body, 'session:', req.session && { isLoggedIn: req.session.isLoggedIn, userId: req.session.userId });
@@ -392,7 +479,7 @@ app.post("/cart/add", (req, res) => {
 });
 
 
-//READ
+//CART READ
 
 app.get("/cart", (req, res) => {
   if (!req.session.isLoggedIn) return res.redirect("/login");
@@ -413,7 +500,7 @@ app.get("/cart", (req, res) => {
 });
 
 
-//UPDATE
+//CART UPDATE
 
 app.post("/cart/update/:id", (req, res) => {
   const { quantity } = req.body;
@@ -422,11 +509,87 @@ app.post("/cart/update/:id", (req, res) => {
   });
 });
 
-//DELETE
+//CART DELETE
 
 app.get("/cart/delete/:id", (req, res) => {
   db.run("DELETE FROM cart WHERE id=?", [req.params.id], () => res.redirect("/cart"));
 });
+
+
+
+// API GET CART ITEMS
+
+app.get("/api/cart", (req, res) => {
+  if (!req.session.isLoggedIn) return res.status(403).json({ error: "Not logged in" });
+  const userId = req.session.userId;
+  const sql = `
+    SELECT c.id, p.name, p.price, p.image, c.quantity
+    FROM cart c
+    JOIN products p ON p.id = c.product_id
+    WHERE c.user_id = ?;
+  `;
+  db.all(sql, [userId], (err, items) => {
+    if (err) {
+      console.error("Error loading cart:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+    res.json(items);
+  });
+});
+
+// API ADD ITEM TO CART
+app.post("/api/cart/add",(req, res) => {
+  if (!req.session.isLoggedIn) return res.status(403).json({ error: "Not logged in" });
+  const { productId } = req.body;
+  const userId = req.session.userId;
+
+  db.get("SELECT * FROM cart WHERE user_id=? AND product_id=?", [userId, productId], (err, row) => {
+    if (err) return res.status(500).json({ error: "Database error" });
+    if (row) {
+      db.run("UPDATE cart SET quantity = quantity + 1 WHERE id=?", [row.id], () => {
+        res.json({ success: true, message: "Quantity updated" });
+      });
+    } else {
+      db.run("INSERT INTO cart (user_id, product_id, quantity) VALUES (?, ?, 1)", [userId, productId], () => {
+        res.json({ success: true, message: "Product added" });
+      });
+    }
+  });
+});
+
+// pseudo-code
+
+app.post('/api/cart/add', async (req, res) => {
+  const { productId } = req.body;
+  const userId = req.session.userId;
+
+  let item = await Cart.findOne({ userId, productId });
+
+  if (item) {
+    // Increase quantity
+    item.quantity += 1;
+    await item.save();
+  } else {
+    // new item
+    await Cart.create({ userId, productId, quantity: 1 });
+  }
+
+  res.json({ success: true });
+});
+
+
+// API DELETE ITEM FROM CART
+app.delete("/api/cart/:id", (req, res) => {
+  const { id } = req.params;
+  db.run("DELETE FROM cart WHERE id=?", [id], (err) => {
+    if (err) return res.status(500).json({ error: "Database error" });
+    res.json({ success: true });
+  });
+});
+
+
+
+
 
 // PAYMENT
 

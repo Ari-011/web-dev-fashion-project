@@ -48,16 +48,19 @@
         <li><a href="/sunglasses">Sunglasses</a></li>
         <li><a href="/glasses">Glasses</a></li>
         <li><a href="/contact">Contact us</a></li>
-        
         {{#if session.isLoggedIn}}
-        {{#if session.isAdmin}}
+    <li><a href="/cart">My Cart</a></li>
+
+    {{#if session.isAdmin}}
       <li><a href="/users">User Management</a></li>
     {{/if}}
-      <li><a href="/logout">Logout</a></li>
-      <li>Welcome, {{session.un}}!</li>
-    {{else}}
-      <li><a href="/login">Login</a></li>
-    {{/if}}
+
+    <li><a href="/logout">Logout</a></li>
+    <li>Welcome, {{session.un}}!</li>
+  {{else}}
+    <li><a href="/login">Login</a></li>
+    <li><a href="/register">Register</a></li>
+  {{/if}}
       </ul>
     </nav>
   </div>

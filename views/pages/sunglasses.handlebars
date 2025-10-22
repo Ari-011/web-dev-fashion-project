@@ -14,12 +14,20 @@
             <p>{{this.price}} SEK</p>
             <form method="post" action="/cart/add">
             <input type="hidden" name="productId" value="{{id}}">
-            <button type="submit">Add to cart</button>
+           <button class="add-to-cart-btn" data-id="{{product.id}}" onclick="addToCart({{id}})">Add to cart</button> 
             </form>
         </div>
       {{/each}}
     </div>
   </section>
+  <div class="pagination">
+  {{#if totalPages}}
+    {{#each (range 1 totalPages)}}
+      <a href="/sunglasses?page={{this}}" class="{{#ifEquals this ../currentPage}}active{{/ifEquals}}">{{this}}</a>
+    {{/each}}
+  {{/if}}
+</div>
+
 </main>
 
 

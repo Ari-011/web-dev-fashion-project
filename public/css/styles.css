@@ -870,6 +870,179 @@ button:hover {
   height: 900px;
 }
 
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 40px 0;
+  flex-wrap: wrap;
+}
+
+.pagination a, .pagination span {
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: 1px solid #107cbf;
+  color: #107cbf;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.pagination a:hover {
+  background-color: #107cbf;
+  color: #fff;
+}
+
+.pagination .active {
+  background-color: #107cbf;
+  color: #fff;
+  pointer-events: none;
+}
+
+/* Form Container */
+form {
+  max-width: 500px;
+  margin: 40px auto;
+  background-color: #fff;
+  padding: 30px 25px;
+  border-radius: 10px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+form h1 {
+  text-align: center;
+  font-size: 2rem;
+  color: #222;
+  margin-bottom: 20px;
+}
+
+form label {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+form input {
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+form input:focus {
+  border-color: #107cbf;
+  box-shadow: 0 0 8px rgba(16,124,191,0.2);
+  outline: none;
+}
+
+form button {
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  background-color: #107cbf;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: #0e6aa3;
+}
+
+/* Error & Success Messages */
+form p {
+  text-align: center;
+  font-weight: 500;
+}
+
+form p[style*="color:red"] {
+  color: #ff4d4d;
+}
+
+form p[style*="color:green"] {
+  color: #28a745;
+}
+
+#generate {
+  background-color: #555;
+  color: #fff;
+  border-radius: 25px;
+  padding: 10px 15px;
+  font-weight: 500;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+}
+
+#generate:hover {
+  background-color: #333;
+}
+
+
+@media (max-width: 768px) {
+  form {
+    width: 90%;
+    padding: 25px 20px;
+  }
+
+  form h1 {
+    font-size: 1.8rem;
+  }
+
+  form button, #generate {
+    width: 100%;
+  }
+
+  form input {
+    font-size: 13px;
+  }
+}
+
+
+/* Responsiveness */
+
+@media (max-width: 480px) {
+  .products-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .product-item img {
+    height: 250px;
+  }
+  
+  .home-button button {
+    width: 100%;
+    padding: 12px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-middle-line {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px 20px;
+  }
+
+  .header-icons {
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .store-name h1 {
+    font-size: 22px;
+    text-align: center;
+  }
+}
+
 
 @media (max-width: 768px) {
   

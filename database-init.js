@@ -91,11 +91,11 @@ db.serialize(() => {
     )
   `);
 
-  // Insert categories (fresh DB -> ids will be 1 and 2)
+  // Insert categories ( ids will be 1 and 2)
   db.run("INSERT INTO categories (name) VALUES ('Eyeglasses'), ('Sunglasses')", function(err) {
     if (err) return console.error('Insert categories error:', err.message);
 
-    // after categories inserted on a fresh DB, ids are 1 and 2
+    
     const eyeglassesId = 1;
     const sunglassesId = 2;
 
@@ -146,8 +146,7 @@ db.serialize(() => {
     }
     insert.finalize(async() => {
       console.log('Database initialized with categories and products.');
-      // Create admin user BEFORE closing the DB.
-    // use bcrypt.hash to create the hashed password, then insert, then close DB
+      
     try {
       const bcrypt = require('bcrypt');
       const saltRounds = 12;
@@ -155,7 +154,7 @@ db.serialize(() => {
       const hashed = await bcrypt.hash(adminPassword, saltRounds);
       db.run("INSERT INTO users (username, password, isAdmin) VALUES (?, ?, ?)", ['admin', hashed, 1], (err) => {
         if (err) console.warn('Insert admin user error:', err.message);
-        // close DB only after admin user insertion completes
+        // close DB 
         db.close((closeErr) => {
           if (closeErr) console.error('Error closing DB:', closeErr.message);
           else console.log('Database closed.');
@@ -163,7 +162,7 @@ db.serialize(() => {
       });
     } catch (err) {
       console.error('Error creating admin user:', err);
-      // still close DB to avoid leaving it open
+      // Double close DB
       db.close();
     }
     });

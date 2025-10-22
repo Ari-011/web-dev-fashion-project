@@ -4,24 +4,27 @@
       <img src="/img/maineyee.jpeg" alt="Secondary image" />
     </div>
 
-    <section class="best-sellers">
-      <h2>Eyeglasses</h2>
+      <section class="best-sellers">
+      <h2>Eye-glasses</h2>
       <div class="products-grid">
-        {{#each eyeglasses}}
+        {{#each glasses}}
           <div class="product-item">
-              <img src="/{{this.image}}" alt="{{this.name}}" />
-              <h3>{{this.name}}</h3>
-              <p>{{this.price}} SEK</p>
-              <button onclick="addToCart({
-                  id: '{{this.id}}',
-                  name: '{{this.name}}',
-                  price: {{this.price}},
-                  image: '{{this.image}}'
-                })">Add to Cart</button>
-            </a>
-          </div>
-        {{/each}}
-      </div>
-    </section>
+            <img src="{{this.image}}" alt="{{this.name}}" />
+            <h3>{{this.name}}</h3>
+            <p>{{this.price}} SEK</p>
+            <form method="post" action="/cart/add">
+            <input type="hidden" name="productId" value="{{id}}">
+           <button class="add-to-cart-btn" data-id="{{product.id}}" onclick="addToCart({{id}})">Add to cart</button> 
+            </form>
+        </div>
+      {{/each}}
+    </div>
   </section>
+  <div class="pagination">
+  {{#if totalPages}}
+    {{#each (range 1 totalPages)}}
+      <a href="/glasses?page={{this}}" class="{{#ifEquals this ../currentPage}}active{{/ifEquals}}">{{this}}</a>
+    {{/each}}
+  {{/if}}
+</div>
 </main>
